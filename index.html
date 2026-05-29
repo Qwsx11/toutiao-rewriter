@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>头条热讯 · 25频道改写工作台</title>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>头条热讯 · 25频道 · V4PRO</title>
 <style>:root{--bg:#f7f8fc;--card:#fff;--bd:#e8ecf2;--p:#4f6ef7;--r:#e63946;--b:#2980b9;--g:#d4a853;--t1:#1a1a2e;--t2:#585878;--t3:#9898b8}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden;font-size:13px}
@@ -57,7 +57,7 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
 .copy-bar button{padding:7px 14px;border:0;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
 @media(max-width:768px){.sidebar{display:none}.detail-panel{width:100vw}}
 </style></head><body>
-<div class="app"><div class="sidebar"><div class="sbh"><h3>📰 头条热讯</h3><p>25频道 · 每频TOP10</p></div><div class="cat-nav" id="catNav"></div><div class="sf">实时数据 · 零重复改写 · Qwsx11</div></div>
+<div class="app"><div class="sidebar"><div class="sbh"><h3>📰 头条热讯</h3><p>25频道 · V4PRO · 每频TOP10</p></div><div class="cat-nav" id="catNav"></div><div class="sf">V4PRO引擎 · Qwsx11</div></div>
 <div class="main"><div class="topbar"><h2 id="mainTitle">🔥 热点</h2><em id="mainSub">点击文章查看详情并改写</em></div><div class="content" id="mainContent"></div></div></div>
 <div class="detail-backdrop" id="backdrop"></div><div class="detail-panel" id="detail"></div><div class="toast" id="toast"></div>
 <script>
@@ -84,7 +84,7 @@ function renderNav(){
   $('catNav').querySelectorAll('.cat-item').forEach(function(el){el.onclick=function(){
     curCat=this.dataset.cat;curArt=null;
     document.querySelectorAll('.cat-item').forEach(function(e){e.classList.remove('active')});this.classList.add('active');
-    var c=CATS.find(function(x){return x.id===curCat});$('mainTitle').textContent=c.icon+' '+c.name;$('mainSub').textContent='每频TOP10 · 点击文章查看详情';renderTab();closePanel()}});
+    var c=CATS.find(function(x){return x.id===curCat});$('mainTitle').textContent=c.icon+' '+c.name;$('mainSub').textContent='V4PRO · TOP10 · 点击改写';renderTab();closePanel()}});
 }
 function fmtN(n){if(n>=10000)return (n/10000).toFixed(1)+'万';return n+''}
 function renderTab(){
@@ -96,16 +96,17 @@ function renderTab(){
     if(e.target.dataset.action==='visit'){window.open(curArt.u,'_blank');return}
     if(e.target.dataset.action==='gen'){showPanel();setTimeout(function(){doRewrite()},300);return}
     showPanel()}})}
-function showPanel(){if(!curArt)return;var h='<div class="detail-head"><h3>文章详情</h3><button class="detail-close" onclick="closePanel()">✕</button></div><div class="detail-body"><h1>'+curArt.t+'</h1><div class="detail-meta">📂 '+curCat+' · 📅 2026.05.30</div><div class="detail-stats"><div class="st"><b>'+fmtN(curArt.r)+'</b><span>阅读</span></div><div class="st"><b>'+fmtN(curArt.c)+'</b><span>评论</span></div><div class="st"><b>'+fmtN(curArt.z)+'</b><span>转发</span></div></div><div class="detail-article">'+curArt.f.split('\n').filter(function(p){return p.trim()}).map(function(p){return'<p>'+p+'</p>'}).join('')+'</div><div class="detail-actions"><button class="gen" onclick="doRewrite()">✍️ 生成改写</button><a class="visit" href="'+curArt.u+'" target="_blank">🔗 访问原文</a></div><div class="rewrite-output" id="rwOut"></div></div>';$('detail').innerHTML=h;$('detail').classList.add('show');$('backdrop').classList.add('show')}
+function showPanel(){if(!curArt)return;var h='<div class="detail-head"><h3>文章详情</h3><button class="detail-close" onclick="closePanel()">✕</button></div><div class="detail-body"><h1>'+curArt.t+'</h1><div class="detail-meta">📂 '+curCat+' · 📅 2026.05.30</div><div class="detail-stats"><div class="st"><b>'+fmtN(curArt.r)+'</b><span>阅读</span></div><div class="st"><b>'+fmtN(curArt.c)+'</b><span>评论</span></div><div class="st"><b>'+fmtN(curArt.z)+'</b><span>转发</span></div></div><div class="detail-article">'+curArt.f.split('\n').filter(function(p){return p.trim()}).map(function(p){return'<p>'+p+'</p>'}).join('')+'</div><div class="detail-actions"><button class="gen" onclick="doRewrite()">✍️ V4PRO改写</button><a class="visit" href="'+curArt.u+'" target="_blank">🔗 访问原文</a></div><div class="rewrite-output" id="rwOut"></div></div>';$('detail').innerHTML=h;$('detail').classList.add('show');$('backdrop').classList.add('show')}
 function closePanel(){$('detail').classList.remove('show');$('backdrop').classList.remove('show');curArt=null}
 $('backdrop').onclick=closePanel;
-function doRewrite(){if(!curArt)return;var out=$('rwOut');if(!out)return;out.classList.add('show');out.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3)"><span class="spin-s"></span>AI零重复改写中...</div>';
+function doRewrite(){if(!curArt)return;var out=$('rwOut');if(!out)return;out.classList.add('show');out.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3)"><span class="spin-s"></span>V4PRO零重复改写中...</div>';
 setTimeout(function(){var orig=curArt.f;var sents=orig.split(/[。！？\n]/).filter(function(s){return s.trim().length>5});
 var pat=['坦率的讲，','你想想看，','我跟你说，','说真的，','回头来看，','我觉得吧，','有个细节被很多人忽略了。','一组数据能说明很多问题。','你要问我的看法，','换个思路来看，'];
 var nt='';sents.forEach(function(s,i){nt+=pat[i%pat.length]+s.trim()+'。'});
 function cs(a,b){function ng(t,n){var g=[];t=t.replace(/\s/g,'');for(var i=0;i<=t.length-n;i++)g.push(t.substring(i,i+n));return g}var o=ng(a,10),r=ng(b,10);var rs={};r.forEach(function(g){rs[g]=true});var ov=0;o.forEach(function(g){if(rs[g])ov++});return (ov/o.length*100).toFixed(1)}
 var sim=cs(orig,nt);var sc=parseFloat(sim)<5?'sim-ok':'sim-warn';var sl=parseFloat(sim)<5?'✅ 通过':'⚠️ 临界';
-var h='<h2>✍️ 零重复改写结果</h2><div style="margin-bottom:12px"><span class="sim-badge '+sc+'">相似度 '+sim+'% '+sl+'</span><span style="font-size:10px;color:var(--t3);margin-left:6px">10-gram检测 · 文皮皮同款算法</span></div><div class="rop em">'+pat[Math.floor(Math.random()*pat.length)]+'今天聊的这条消息，信息量其实不小。</div><div class="rop">'+nt+'</div><div style="text-align:center;color:var(--t3);font-size:11px;margin-top:16px">—— 零重复改写引擎 v3 ——</div><div class="copy-bar"><button style="background:var(--p);color:#fff;padding:7px 14px;border:0;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer" onclick="copyRw()">📋 复制改写文</button></div>';out.innerHTML=h},1500)}
+var h='<h2>✍️ V4PRO改写结果</h2><div style="margin-bottom:12px"><span class="sim-badge '+sc+'">相似度 '+sim+'% '+sl+'</span><span style="font-size:10px;color:var(--t3);margin-left:6px">10-gram检测 · 文皮皮同款算法</span></div><div class="rop em">'+pat[Math.floor(Math.random()*pat.length)]+'今天聊的这条消息，信息量其实不小。</div><div class="rop">'+nt+'</div><div style="text-align:center;color:var(--t3);font-size:11px;margin-top:16px">—— V4PRO引擎 · 零重复 · 相似度 '+sim+'% ——</div><div class="copy-bar"><button style="background:var(--p);color:#fff;padding:7px 14px;border:0;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer" onclick="copyRw()">📋 复制改写文</button></div>';out.innerHTML=h},1500)}
 function copyRw(){var out=$('rwOut');if(!out)return;var t=out.innerText.replace(/\n{3,}/g,'\n\n').trim();navigator.clipboard.writeText(t).then(function(){T('✅ 已复制')})}
 renderNav();renderTab();
 </script></body></html>
+      
