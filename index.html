@@ -5,193 +5,138 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>头条热讯 V4PRO</title>
 <style>
-body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;margin:0;padding:0;background:#f5f6fa;color:#1a1a2e;font-size:13px}
-.topbar{background:#fff;padding:10px 18px;border-bottom:1px solid #e5e8f0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:10}
-.topbar select{padding:5px 10px;border:1px solid #dde;border-radius:5px;font-size:11px;font-family:inherit}
-.topbar .cattags{display:flex;gap:4px;flex-wrap:wrap}
-.topbar .cattags a{display:inline-block;padding:5px 10px;font-size:10px;color:#585878;text-decoration:none;border-radius:14px;border:1px solid transparent;cursor:pointer}
-.topbar .cattags a.on{background:#4f6ef7;color:#fff;border-color:#4f6ef7}
-.content{max-width:900px;margin:0 auto;padding:14px}
-.art-row{background:#fff;border:1px solid #e5e8f0;border-radius:10px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s}
-.art-row:hover{border-color:#4f6ef7;box-shadow:0 2px 10px rgba(79,110,247,.06)}
-.art-row .idx{font-size:16px;font-weight:900;min-width:28px;text-align:center}.art-row .idx.r1{color:#e63946}.art-row .idx.r2{color:#e67e22}.art-row .idx.r3{color:#d4a853}
-.art-row .info{flex:1;min-width:0}
-.art-row .info .tl{font-weight:600;line-height:1.4}.art-row .info .st{font-size:10px;color:#9898b8;margin-top:3px}
-.art-row .btn{display:inline-block;padding:5px 10px;border:0;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;margin:1px;white-space:nowrap}.btn-gen{background:#4f6ef7;color:#fff}.btn-v{background:#f5f6fa;color:#4f6ef7;border:1px solid #dde}
-
-/* Detail */
-#overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.3);z-index:100;justify-content:flex-end}
-#overlay.on{display:flex}
-#panel{width:560px;max-width:96vw;height:100vh;background:#fff;overflow-y:auto;box-shadow:-3px 0 20px rgba(0,0,0,.1)}
-#panel .head{padding:12px 16px;border-bottom:1px solid #e5e8f0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff}
-#panel .head span{font-weight:700;font-size:13px}
-#panel .head button{border:1px solid #e5e8f0;background:#fff;width:28px;height:28px;border-radius:5px;cursor:pointer;font-size:14px}
-#panel .body{padding:16px}
-#panel .title{font-size:20px;font-weight:900;line-height:1.4;margin-bottom:8px}
-#panel .meta{font-size:10px;color:#9898b8;margin-bottom:12px}
-#panel .stats{display:flex;gap:14px;margin-bottom:14px}
-#panel .stats .si{background:#fafbfd;border-radius:6px;padding:8px 12px;text-align:center;min-width:55px}
-#panel .stats .si b{display:block;font-size:14px;font-weight:900}.stats .si span{font-size:8px;color:#9898b8}
-#panel .orig{font-size:13px;line-height:1.95;color:#585878;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #e5e8f0}
-#panel .orig p{margin-bottom:10px}
-#panel .act-row{display:flex;gap:8px;margin-bottom:8px}
-#panel .act-row a,#panel .act-row button{padding:9px 18px;border:0;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
-#panel .act-row .rw{background:#4f6ef7;color:#fff}#panel .act-row .vi{background:#e63946;color:#fff}
-#panel .rwo{display:none;margin-top:14px}#panel .rwo.on{display:block}
-.rwo .rt{font-size:19px;font-weight:900;line-height:1.4;margin-bottom:4px}
-.rwo .rm{font-size:10px;color:#9898b8;margin-bottom:16px}
-.rwo .sr{margin-bottom:14px}
-.rwo .sb{display:inline-block;padding:3px 10px;border-radius:12px;font-size:9px;font-weight:600}.rwo .sb.ok{background:#e8f8f0;color:#27ae60}.rwo .sb.wr{background:#fff3cd;color:#e67e22}
-.rwo .rh{font-size:15px;font-weight:700;color:#e63946;margin:24px 0 8px;padding-left:10px;border-left:3px solid #e63946}
-.rwo .rh.cb{border-left-color:#2980b9;color:#2980b9}.rwo .rh.cg{border-left-color:#d4a853;color:#b8860b}
-.rwo .rp{font-size:13px;line-height:2;color:#585878;margin-bottom:10px}
-.rwo .re{font-size:15px;font-weight:600;color:#1a1a2e;margin:14px 0}
-.rwo .rs{font-size:17px;font-weight:800;color:#1a1a2e;margin:18px 0;text-align:center}
-.rwo .rd{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;padding:14px;background:#fafafa;border-radius:7px;border:1px solid #e5e8f0}
-.rwo .rd .di{flex:1;min-width:50px;text-align:center}.rwo .rd .dn{font-size:22px;font-weight:900;color:#e63946;font-family:Georgia,serif}.rwo .rd .dl{font-size:8px;color:#9898b8}
-.rwo .rf{text-align:center;font-size:10px;color:#9898b8;margin-top:16px;padding-top:14px;border-top:1px solid #e5e8f0}
-.rwo .cbar{display:flex;gap:8px;margin-top:10px}
-.rwo .cbar button{padding:7px 14px;border:0;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit}
-.rwo .cbar .cp{background:#4f6ef7;color:#fff}.rwo .cbar .cr{background:#f0f0f5;color:#585878}
-.retry{display:none;padding:10px 14px;border-radius:6px;font-size:10px;margin-top:6px;background:#fff3cd;color:#e67e22}.retry.on{display:block}
-.sp{display:inline-block;width:13px;height:13px;border:2px solid #ddd;border-top-color:#4f6ef7;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}@keyframes sp{to{transform:rotate(360deg)}}
-#toast{display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:8px 20px;border-radius:16px;font-size:11px;z-index:200}
-#toast.on{display:block}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#f2f4f8;color:#1a1a2e;font-size:14px}
+.top{background:#fff;padding:10px 14px;border-bottom:1px solid #e2e6f0;position:sticky;top:0;z-index:20;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.top b{font-size:14px}.top select{padding:4px 8px;border:1px solid #d4d8e2;border-radius:4px;font-size:11px;font-family:inherit}
+.cats{display:flex;gap:3px;flex-wrap:wrap;margin-left:6px}
+.cats button{padding:4px 8px;font-size:10px;border:1px solid #d4d8e2;background:#fff;border-radius:10px;cursor:pointer;color:#666;font-family:inherit}
+.cats button.on{background:#4f6ef7;color:#fff;border-color:#4f6ef7;font-weight:600}
+.wrap{max-width:960px;margin:0 auto;padding:8px 10px}
+.row{background:#fff;border:1px solid #e2e6f0;border-radius:8px;padding:10px 14px;margin-bottom:5px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.row:hover{box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.rk{font-size:14px;font-weight:900;min-width:24px;text-align:center}
+.r1{color:#e63946}.r2{color:#e67e22}.r3{color:#d4a853}
+.info{flex:1;min-width:0}.info .tl{font-weight:600;line-height:1.4;font-size:13px}.info .st{font-size:10px;color:#aaa;margin-top:2px}
+.btn{padding:3px 8px;border:0;border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block;margin:0 2px}
+.btn-gen{background:#4f6ef7;color:#fff}.btn-v{background:#f2f4f8;color:#4f6ef7;border:1px solid #dde}
+/* Panel */
+.ovl{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);z-index:100;justify-content:flex-end}
+.ovl.on{display:flex}
+.pnl{width:540px;max-width:96vw;height:100vh;background:#fff;overflow-y:auto;box-shadow:-3px 0 18px rgba(0,0,0,.08)}
+.pnl .hd{padding:10px 14px;border-bottom:1px solid #e2e6f0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff}
+.pnl .hd span{font-size:13px;font-weight:700}
+.pnl .hd button{border:1px solid #d4d8e2;background:#fff;width:26px;height:26px;border-radius:4px;cursor:pointer;font-size:14px}
+.pnl .bd{padding:14px}
+.pnl .title{font-size:18px;font-weight:900;line-height:1.4;margin-bottom:6px}
+.pnl .meta{font-size:10px;color:#aaa;margin-bottom:10px}
+.pnl .orig{font-size:13px;line-height:1.9;color:#666;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #e2e6f0}.pnl .orig p{margin-bottom:10px}
+.pnl .acts{display:flex;gap:8px}
+.pnl .acts a,.pnl .acts button{padding:8px 14px;border:0;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.pnl .acts .rw{background:#4f6ef7;color:#fff}.pnl .acts .vi{background:#e63946;color:#fff}
+.rwo{display:none;margin-top:14px}.rwo.on{display:block}
+.rwo .rt{font-size:18px;font-weight:900;line-height:1.4;margin-bottom:4px}
+.rwo .rm{font-size:10px;color:#aaa;margin-bottom:14px}
+.sb{display:inline-block;padding:3px 10px;border-radius:10px;font-size:9px;font-weight:600}.sb.ok{background:#e8f8f0;color:#27ae60}.sb.wr{background:#fff3cd;color:#e67e22}
+.rh{font-size:14px;font-weight:700;color:#e63946;margin:20px 0 8px;padding-left:10px;border-left:3px solid #e63946}
+.rh.cb{border-left-color:#2980b9;color:#2980b9}.rh.cg{border-left-color:#d4a853;color:#b8860b}
+.rp{font-size:13px;line-height:1.9;color:#666;margin-bottom:9px}
+.re{font-size:15px;font-weight:600;color:#1a1a2e;margin:14px 0}
+.rs{font-size:16px;font-weight:800;color:#1a1a2e;margin:16px 0;text-align:center}
+.rd{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;padding:12px;background:#fafafa;border-radius:6px;border:1px solid #e2e6f0}
+.rd .di{flex:1;min-width:50px;text-align:center}.rd .dn{font-size:20px;font-weight:900;color:#e63946}.rd .dl{font-size:8px;color:#aaa}
+.rf{text-align:center;font-size:10px;color:#aaa;margin-top:14px;padding-top:12px;border-top:1px solid #e2e6f0}
+.cbar{display:flex;gap:8px;margin-top:10px}
+.cbar button{padding:7px 14px;border:0;border-radius:6px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit}
+.cbar .cp{background:#4f6ef7;color:#fff}.cbar .cr{background:#f0f0f5;color:#666}
+.sp{display:inline-block;width:12px;height:12px;border:2px solid #ddd;border-top-color:#4f6ef7;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}@keyframes sp{to{transform:rotate(360deg)}}
+.toast{display:none;position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:7px 18px;border-radius:14px;font-size:11px;z-index:200}
+.toast.on{display:block}
+.sec{display:none}.sec.on{display:block}
 </style>
 </head>
 <body>
 
-<div class="topbar">
+<div class="top">
   <b>📰 头条热讯 · V4PRO</b>
-  <select id="mdl" onchange="changeModel()">
-    <option selected>V4PRO</option><option>V4-Flash</option><option>DeepSeek-V3</option><option>GPT-4o</option><option>Claude 4 Sonnet</option>
-  </select>
-  <div class="cattags" id="cattags"></div>
+  <select id="mdl"><option>V4PRO</option><option>V4-Flash</option><option>DeepSeek-V3</option><option>GPT-4o</option><option>Claude 4 Sonnet</option></select>
+  <div class="cats" id="cats"></div>
 </div>
-<div class="content" id="main"></div>
-
-<div id="overlay" onclick="if(event.target===this)closePanel()">
-  <div id="panel"></div>
+<div class="wrap">
+<div class="sec on" id="s-hot">
+<div class="row" onclick="openP('hot',0)"><div class="rk r1">1</div><div class="info"><div class="tl">特朗普结束访华：中美同意启动AI政府间对话机制</div><div class="st">📖 586.2万阅读 · 💬 4.2万评论 · 🔄 8.9万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',0);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',1)"><div class="rk r2">2</div><div class="info"><div class="tl">普京第25次访华：专车车牌暗藏中国文化密码</div><div class="st">📖 423.0万阅读 · 💬 3.8万评论 · 🔄 7.2万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',1);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',2)"><div class="rk r3">3</div><div class="info"><div class="tl">22岁吴宜泽18:17绝杀墨菲摘得斯诺克世锦赛桂冠</div><div class="st">📖 389.0万阅读 · 💬 5.6万评论 · 🔄 10.4万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',2);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',3)"><div class="rk">4</div><div class="info"><div class="tl">武契奇试驾小米YU7：车很漂亮但我买不起</div><div class="st">📖 312.0万阅读 · 💬 6.2万评论 · 🔄 11.2万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',3);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',4)"><div class="rk">5</div><div class="info"><div class="tl">比亚迪发布璇玑A3：中国第一款车规级4纳米智驾芯片</div><div class="st">📖 298.0万阅读 · 💬 4.1万评论 · 🔄 7.8万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',4);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',5)"><div class="rk">6</div><div class="info"><div class="tl">霍尔木兹海峡封锁第84天：全球油价150美元警报拉响</div><div class="st">📖 267.0万阅读 · 💬 5.1万评论 · 🔄 9.3万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',5);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',6)"><div class="rk">7</div><div class="info"><div class="tl">蓝色起源新格伦火箭测试爆炸：美国登月计划被迫再延</div><div class="st">📖 312.0万阅读 · 💬 4.5万评论 · 🔄 8.7万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',6);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',7)"><div class="rk">8</div><div class="info"><div class="tl">DeepSeek一个月崩了五次：日活破2亿算力仅增8.3%</div><div class="st">📖 195.0万阅读 · 💬 3.8万评论 · 🔄 6.5万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',7);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',8)"><div class="rk">9</div><div class="info"><div class="tl">CBA总决赛上海101比90力克广厦取得总比分领先</div><div class="st">📖 156.0万阅读 · 💬 2.9万评论 · 🔄 4.7万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',8);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
+<div class="row" onclick="openP('hot',9)"><div class="rk">10</div><div class="info"><div class="tl">端午节放假三天无需调休引发网友好评刷屏</div><div class="st">📖 178.0万阅读 · 💬 3.5万评论 · 🔄 5.8万转发</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="https://www.toutiao.com/" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP('hot',9);setTimeout(function(){startRW()},400)">✍️改写</button></div></div>
 </div>
-<div id="toast"></div>
+</div>
 
+<div class="ovl" id="ovl" onclick="if(event.target===this)closeP()"><div class="pnl" id="pnl"></div></div>
+<div class="toast" id="toast"></div>
 <script>
-// ========== TOAST ==========
-function toast(m){var e=document.getElementById('toast');e.textContent=m;e.className='on';setTimeout(function(){e.className=''},2000)}
+function T(m){var e=document.getElementById('toast');e.textContent=m;e.className='on';setTimeout(function(){e.className=''},1800)}
 
-// ========== DATA ==========
-var CATS=[
-  {id:'hot',n:'热点'},{id:'intl',n:'国际'},{id:'tech',n:'科技'},{id:'ent',n:'娱乐'},{id:'history',n:'历史'},
-  {id:'military',n:'军事'},{id:'sports',n:'体育'},{id:'finance',n:'财经'},{id:'food',n:'美食'},{id:'travel',n:'旅游'},
-  {id:'society',n:'社会'},{id:'science',n:'科学'},{id:'auto',n:'汽车'},{id:'law',n:'法律'},{id:'weitoutiao',n:'微头条'},
-  {id:'sannong',n:'三农'},{id:'emotion',n:'情感'},{id:'stock',n:'股票'},{id:'variety',n:'综艺'},{id:'edu',n:'教育'},
-  {id:'culture',n:'文化'},{id:'life',n:'生活'},{id:'digital',n:'数码'},{id:'movie',n:'电影'},{id:'phone',n:'手机'}
-];
+var CATS=[{id:'hot',n:'热点'},{id:'intl',n:'国际'},{id:'tech',n:'科技'},{id:'ent',n:'娱乐'},{id:'history',n:'历史'},{id:'military',n:'军事'},{id:'sports',n:'体育'},{id:'finance',n:'财经'},{id:'food',n:'美食'},{id:'travel',n:'旅游'},{id:'society',n:'社会'},{id:'science',n:'科学'},{id:'auto',n:'汽车'},{id:'law',n:'法律'},{id:'weitoutiao',n:'微头条'},{id:'sannong',n:'三农'},{id:'emotion',n:'情感'},{id:'stock',n:'股票'},{id:'variety',n:'综艺'},{id:'edu',n:'教育'},{id:'culture',n:'文化'},{id:'life',n:'生活'},{id:'digital',n:'数码'},{id:'movie',n:'电影'},{id:'phone',n:'手机'}];
+var curC='hot';
+!function(){var h='';for(var i=0;i<CATS.length;i++){var c=CATS[i];h+='<button class="'+(c.id===curC?'on':'')+'" data-c="'+c.id+'">'+c.n+'</button>'}document.getElementById('cats').innerHTML=h;var bs=document.getElementById('cats').querySelectorAll('button');for(var i=0;i<bs.length;i++){bs[i].onclick=function(){switchC(this.getAttribute('data-c'))}}}();
+function switchC(id){curC=id;closeP();var bs=document.getElementById('cats').querySelectorAll('button');for(var i=0;i<bs.length;i++){bs[i].className=bs[i].getAttribute('data-c')===id?'on':''}var secs=document.querySelectorAll('.sec');for(var i=0;i<secs.length;i++)secs[i].className='sec';var s=document.getElementById('s-'+id);if(s)s.className='sec on';if(!document.getElementById('s-'+id))renderSec(id)}
 
-var DATA={};
+var FULL={
+hot:[{t:'特朗普结束访华：中美同意启动AI政府间对话机制',u:'https://www.toutiao.com/',c:'美国总统特朗普于2026年5月13日至15日对中国进行国事访问。这是自2017年以来，时隔整整九年，第一个在任美国总统踏上中国土地。\n\n和他一起飞过来的不是标准的外交团队。同行名单上有英伟达CEO黄仁勋——芯片界最有权势的人之一，苹果CEO蒂姆·库克，还有特斯拉的高管。这三家公司在全球半导体、消费电子和新能源汽车领域的分量不需要多解释。\n\n五天行程敲定的重大成果之一，是双方同意正式建立人工智能领域的政府间对话机制。多家国际媒体用同一个词来形容这件事——"里程碑式的"。在这之前，全球最大的两个AI超级大国在这个领域一直没有结构性沟通渠道。\n\n资本市场在访问前后给出了直接反馈。英伟达股票持续走高，市值一度站上5.5万亿美元大关。黄仁勋本人账面财富膨胀到1625亿美元，在全球富豪榜上位居第八。\n\n分析人士普遍认为，这次访问的"科技含量"远超此前任何一次美国总统访华。随行企业本身就是一份美方科技力量的浓缩清单，而达成的AI对话机制则意味着双方终于承认了一个现实：在人工智能这件事上，单方面制定游戏规则已经行不通了。'},
+{t:'普京第25次访华：专车车牌暗藏中国文化密码',u:'https://www.toutiao.com/',c:'2026年5月19日傍晚，一架俄罗斯专机在北京首都国际机场着陆。普京走出来的时候，距离他上一次站在中国土地上不过几个月。这是他第25次以总统身份访华，恰好扎在中俄战略协作伙伴关系建立三十周年的时间节点上。\n\n当晚一个细节被各家媒体反复拿出来说。普京搭乘的那辆专车挂上了一面中国号牌，车里藏了三个"8"。在中国文化里，8念作"发"——从商周时代的礼制到现代人的车牌选号，几千年来这个数字一直是顶格的好兆头。给来访的外国元首布置这样一块车牌，一定不是抽签抽出来的。\n\n下车之前他做了一个动作——把西装外套脱下来搭在手上。就这一个动作，第二天社交媒体的评论区变成了微表情学家的辩论场。\n\n正式闭门会谈安排在5月20日。习近平和普京隔着长桌谈了不到半天，最后签出了23份合作文件，涵盖能源、科技和安全。具体条款大部分没有公开，但数量本身就足以说明问题。普京本人对媒体用了一句话收尾——"俄中关系正处在史无前例的高点。"'},
+{t:'22岁吴宜泽18比17绝杀肖恩墨菲摘得斯诺克世锦赛桂冠',u:'https://www.toutiao.com/',c:'北京时间5月25日深夜，英国谢菲尔德市的克鲁斯堡剧院里，空气重得像能拧出水来。\n\n斯诺克世锦赛决赛打到第十七盘的时候，比分牌定格在17比17。全场都知道这意味着什么——下一盘谁拿下谁就是世界冠军。\n\n球桌一头坐着的男人叫肖恩·墨菲，拿了英锦赛、大师赛和世锦赛全套大满贯，在这个圈子里沉沉浮浮二十年。另一头坐着的中国小伙子还没过23岁生日，名字叫吴宜泽。\n\n他弯腰瞄球的时候，全世界的摄像机都在找他的手。然后他打出了整场比赛最干净的一杆清台。放下球杆之后他笑了笑，那种笑明显不是刻意控制出来的——是根本没压住的那种。\n\n斯诺克世锦赛从创办到现在，这是头一次诞生00后世界冠军。去年捧杯的赵心童也是中国面孔。换句话说，中国选手在这项运动最高殿堂里已经连续两年把奖杯端回亚洲了。\n\n很多人条件反射般地想起另一个中国人——丁俊晖。2005年他18岁拿下中国公开赛时，斯诺克拿国内市场来说妥妥的小众冷门。丁俊晖追了一整个职业生涯的世锦赛金杯始终没能到手。而现在两个00后替他把没圆的梦给圆了。\n\n夺冠之后吴宜泽在直播里随口聊了一堆自己的事。身高一米八五，平常私下跟丁俊晖一块吃饭一块研究球路，网球挺郑钦文，看曼联比赛，歌单里最多的是陈奕迅。记者问新赛季目标，他语气跟说明早吃面一样——"争取世界第一。"'}],
+intl:[{t:'伊朗封锁霍尔木兹海峡走进第84天，全球油价150美元预警拉响',u:'https://www.toutiao.com/',c:'霍尔木兹海峡最窄那一段只有33公里宽。但就是这三十多公里的一线水道，每天流经的原油量占全球海运总量的五分之一还多——大约1500万桶到2000万桶。如今这条水道已经堵了整整十二周。\n\n从2月28日美国和以色列联军对伊朗发动第一轮军事打击算起，到此刻恰好84天。海峡目前的实际通行量只有正常水平的百分之十二，几乎处于闭锁状态。\n\n国际能源署给出的累计算法是触目惊心的：海峡封锁至今，全球原油供应损失累计超过10亿桶。储备库存每天以480万桶左右的速度被消耗掉，单单三月和四月两个月就合计跌掉了近2.5亿桶。\n\n5月最后一周连着出了两件让资本市场头皮发麻的事。26号美国空军对伊朗南部进行了新一轮空袭。两天后伊朗用弹道导弹远程打击了美军在伊拉克的空军基地。布伦特原油期货在99美元上下剧烈震荡。\n\n埃克森美孚5月28日发了一份措辞罕见的预警，大意是：一旦全球储备库存滑落到最低运营水位线以下，布伦特油价不会有序上涨——它会跳涨，直接冲破150美元并有可能继续探到160美元。摩根士丹利和花旗给出的预测区间基本重叠。\n\n美伊核谈桌上看似还在走流程，但伊朗开出的牌单又长又硬：120亿美元冻结资产的完整使用权、所有制裁一次撤干净、美方对战争造成的经济损失进行赔付。荷兰合作银行做了一项测算：哪怕明天就谈成签字，光是扫清水雷、打捞阻塞物、等航运公司重新评估通过海峡的风险——这些流程全部走完也少说要三个月。'}],
+tech:[{t:'比亚迪推出璇玑A3：中国第一款4纳米车规级智驾芯片',u:'https://www.toutiao.com/',c:'5月28日晚上，王传福站在深圳坪山总部的主舞台上，手里攥着一块指甲盖大小的黑色芯片。台下安静了整整三秒，然后全场站起来鼓掌。这就是璇玑A3——中国第一款4纳米车规工艺的自动驾驶芯片。\n\n4纳米这几个字放在消费电子行业不算新鲜词，手机芯片已经跑到了3纳米。但请注意"车规级"这个前缀。车载芯片要求在零下四十度到一百五十度的极端环境里稳定运行十年以上，要通过ISO 26262功能安全标准的最高认证。王传福自己给了一句话来概括难度——"车规4纳米约等于消费电子2纳米。"\n\n璇玑A3配置如下：16核CPU，内置3个NPU计算单元，原生支持Transformer架构的大模型推理。单颗算力约700TOPS，三颗并联可以冲到2100TOPS以上。单位算力功耗相对于同级别的外采方案低了约两成。\n\n这张芯片最大的商业意义不是跑分，而是比亚迪终于实现了软硬件一体化。在此之前智驾系统用的要么是英伟达Orin系列，要么是地平线征程系列，OTA版本迭代节奏不完全由自己说了算。现在芯片和算法都在自己手里攥着。\n\n同一场发布会上甩出来的配套政策比芯片本身更让消费者兴奋。高阶智驾选装一口价一万两千块，连七万级别的入门电动小车都能配上带激光雷达的城市领航功能。更狠的是城市领航全责兜底一年——在合规使用的前提下出了有责事故，比亚迪全额赔付，不计入车主个人商业险记录，不影响下一年的保费。\n\n很多人不知道比亚迪做芯片的历史。2002年就成立了集成电路设计部门，粗算到今天已经做了二十四年。现在晶圆制造和封装测试加起来有五座工厂，芯片研发人员超过七千人。从第一颗到第五千多颗，全系累计研发砸进去超过一千亿。'}]
+};
 
-DATA.hot=[
-{t:'特朗普结束访华，中美同意启动AI政府间对话机制',r:5862000,c:42000,z:89000,u:'https://www.toutiao.com/',f:'美国总统特朗普于2026年5月13日至15日对中国进行国事访问。这是自2017年以来，时隔整整九年，第一个在任美国总统踏上中国土地。\n\n和他一起飞过来的不是标准的外交团队。同行名单上有英伟达CEO黄仁勋——芯片界最有权势的人之一，苹果CEO蒂姆·库克，还有特斯拉的高管。这三家公司在全球半导体、消费电子和新能源汽车领域的分量不需要多解释。\n\n五天行程敲定的重大成果之一，是双方同意正式建立人工智能领域的政府间对话机制。多家国际媒体用同一个词来形容这件事——"里程碑式的"。在这之前，全球最大的两个AI超级大国在这个领域一直没有结构性沟通渠道。\n\n资本市场在访问前后给出了直接反馈。英伟达股票持续走高，市值一度站上5.5万亿美元大关。黄仁勋本人账面财富膨胀到1625亿美元，在全球富豪榜上位居第八。\n\n分析人士普遍认为，这次访问的"科技含量"远超此前任何一次美国总统访华。随行企业本身就是一份美方科技力量的浓缩清单，而达成的AI对话机制则意味着双方终于承认了一个现实：在人工智能这件事上，单方面制定游戏规则已经行不通了。'},
-{t:'普京第25次访华专车车牌暗藏中国文化密码',r:4230000,c:38000,z:72000,u:'https://www.toutiao.com/',f:'2026年5月19日傍晚，一架俄罗斯专机在北京首都国际机场着陆。普京走出来的时候，距离他上一次站在中国土地上不过几个月。这是他第25次以总统身份访华，恰好扎在中俄战略协作伙伴关系建立三十周年的时间节点上。\n\n当晚一个细节被各家媒体反复拿出来说。普京搭乘的那辆专车挂上了一面中国号牌，车里藏了三个"8"。在中国文化里，8念作"发"——从商周时代的礼制到现代人的车牌选号，几千年来这个数字一直是顶格的好兆头。给来访的外国元首布置这样一块车牌，一定不是抽签抽出来的。\n\n下车之前他做了一个动作：把西装外套脱下来搭在手上。就这一个动作，第二天社交媒体的评论区变成了微表情学家的辩论场。有人说是态度松弛，有人说这是对中方接待的完全信赖，也有人觉得——他就是热了。\n\n正式闭门会谈安排在5月20日。习近平和普京隔着长桌谈了不到半天，最后签出了23份合作文件，涵盖能源、科技和安全。具体条款大部分没有公开，但数量本身就足以说明问题。普京本人对媒体用了一句话收尾——"俄中关系正处在史无前例的高点。"\n\n有意思的是，就在大约一个礼拜之前，另一位大国领导人——特朗普——刚刚从同一座城市飞走。中美俄三国元首在不到十天的时间里相继亮相北京，对话、签约、离场。外媒把这十天称为"北京外交季"。'},
-{t:'22岁吴宜泽18比17绝杀肖恩墨菲摘得斯诺克世锦赛桂冠',r:3890000,c:56000,z:104000,u:'https://www.toutiao.com/',f:'北京时间5月25日深夜，英国谢菲尔德市的克鲁斯堡剧院里，空气重得像能拧出水来。\n\n斯诺克世锦赛决赛打到第十七盘的时候，比分牌定格在17比17。全场都知道这意味着什么——下一盘谁拿下谁就是世界冠军。\n\n球桌一头坐着的男人叫肖恩·墨菲，拿了英锦赛、大师赛和世锦赛全套大满贯，在这个圈子里沉沉浮浮二十年。另一头坐着的中国小伙子还没过23岁生日，名字叫吴宜泽。\n\n他弯腰瞄球的时候，全世界的摄像机都在找他的手。然后他打出了整场比赛最干净的一杆清台。放下球杆之后他笑了笑，那种笑明显不是刻意控制出来的——是根本没压住的那种。\n\n斯诺克世锦赛从创办到现在，这是头一次诞生00后世界冠军。去年捧杯的赵心童也是中国面孔。换句话说，中国选手在这项运动最高殿堂里已经连续两年把奖杯端回亚洲了。\n\n很多人条件反射般地想起另一个中国人——丁俊晖。2005年他18岁拿下中国公开赛时，斯诺克拿国内市场来说妥妥的小众冷门。丁俊晖追了一整个职业生涯的世锦赛金杯始终没能到手。而现在两个00后替他把没圆的梦给圆了。\n\n夺冠之后吴宜泽在直播里随口聊了一堆自己的事，身高一米八五，平常私下跟丁俊晖一块吃饭一块研究球路，网球挺郑钦文，看曼联比赛，歌单里最多的是陈奕迅。记者问新赛季目标，他语气跟说明早吃面一样——"争取世界第一。"'}];
-DATA.intl=[{t:'伊朗封锁霍尔木兹海峡走进第84天，全球油价150美元预警拉响',r:2670000,c:51000,z:93000,u:'https://www.toutiao.com/',f:'霍尔木兹海峡最窄那一段只有33公里宽。但就是这三十多公里的一线水道，每天流经的原油量占全球海运总量的五分之一还多——大约1500万桶到2000万桶。如今这条水道已经堵了整整十二周。\n\n从2月28日美国和以色列联军对伊朗发动第一轮军事打击算起，到此刻恰好84天。海峡目前的实际通行量只有正常水平的百分之十二，几乎处于闭锁状态。\n\n国际能源署给出的累计算法是触目惊心的：海峡封锁至今，全球原油供应损失累计超过10亿桶。储备库存每天以480万桶左右的速度被消耗掉，单单三月和四月两个月就合计跌掉了近2.5亿桶。\n\n5月最后一周连着出了两件让资本市场头皮发麻的事。26号美国空军对伊朗南部进行了新一轮空袭。两天后伊朗用弹道导弹远程打击了美军在伊拉克的空军基地。布伦特原油期货在99美元上下剧烈震荡。\n\n埃克森美孚5月28日发了一份措辞罕见的预警，大意是：一旦全球储备库存滑落到最低运营水位线以下，布伦特油价不会有序上涨——它会跳涨，直接冲破150美元并有可能继续探到160美元。摩根士丹利和花旗给出的预测区间基本重叠。\n\n美伊核谈桌上看似还在走流程，但伊朗开出的牌单又长又硬：120亿美元冻结资产的完整使用权、所有制裁一次撤干净、美方对战争造成的经济损失进行赔付。美方这边的出牌是把所有这些条件打包成一个全面框架协议。荷兰合作银行做了一项测算：哪怕明天就谈成签字，光是扫清水雷、打捞阻塞物、等航运公司重新评估通过海峡的风险——这些流程全部走完也少说要三个月。'}];
-DATA.tech=[{t:'比亚迪推出璇玑A3：中国第一款4纳米车规级智驾芯片',r:2980000,c:41000,z:78000,u:'https://www.toutiao.com/',f:'5月28日晚上，王传福站在深圳坪山总部的主舞台上，手里攥着一块指甲盖大小的黑色芯片。台下安静了整整三秒，然后全场站起来鼓掌。这就是璇玑A3——中国第一款4纳米车规工艺的自动驾驶芯片。\n\n4纳米这几个字放在消费电子行业不算新鲜词，手机芯片已经跑到了3纳米。但请注意"车规级"这个前缀。车载芯片要求在零下四十度到一百五十度的极端环境里稳定运行十年以上，要通过ISO 26262功能安全标准的最高认证。王传福自己给了一句话来概括难度——"车规4纳米约等于消费电子2纳米。"\n\n璇玑A3配置如下：16核CPU，内置3个NPU计算单元，原生支持Transformer架构的大模型推理。单颗算力约700TOPS，三颗并联可以冲到2100TOPS以上。单位算力功耗相对于同级别的外采方案低了约两成。\n\n这张芯片最大的商业意义不是跑分，而是比亚迪终于实现了软硬件一体化。在此之前智驾系统用的要么是英伟达Orin系列，要么是地平线征程系列，OTA版本迭代节奏不完全由自己说了算。现在芯片和算法都在自己手里攥着。\n\n同一场发布会上甩出来的配套政策比芯片本身更让消费者兴奋。高阶智驾选装一口价一万两千块，连七万级别的入门电动小车都能配上带激光雷达的城市领航功能。更狠的是城市领航全责兜底一年——在合规使用的前提下出了有责事故，比亚迪全额赔付，不计入车主个人商业险记录，不影响下一年的保费。\n\n很多人不知道比亚迪做芯片的历史。2002年就成立了集成电路设计部门，粗算到今天已经做了二十四年。现在晶圆制造和封装测试加起来有五座工厂，芯片研发人员超过七千人。从第一颗到第五千多颗，全系累计研发砸进去超过一千亿。'}];
-
-// Fill the rest
-function padData(){
-  for(var ci=0;ci<CATS.length;ci++){
-    var c=CATS[ci];if(DATA[c.id])continue;
-    var arts=[];
-    for(var i=0;i<10;i++){
-      var title=c.n+(i===0?'今日要闻速览':i===1?'深度观察：趋势与变量':'热点追踪 #'+(i+1));
-      var body=c.n+'频道今日报道。编辑团队梳理了该领域的最新动态。多个方向的信息交叉验证后，可以确认行业基本面正在经历温和但明确的结构性调整。点击上方跳转按钮可阅读完整报道。';
-      arts.push({t:title,r:Math.floor(Math.random()*900000)+60000,c:Math.floor(Math.random()*6000)+500,z:Math.floor(Math.random()*12000)+1200,u:'https://www.toutiao.com/',f:body});
-    }
-    DATA[c.id]=arts;
-  }
-}
-padData();
-
-// ========== CURRENT STATE ==========
-var curCat='hot', curArt=null, model='V4PRO';
-function changeModel(){model=document.getElementById('mdl').value;toast('模型切换为 '+model)}
-
-// ========== RENDER ==========
-function renderCats(){
-  var h='';
-  for(var i=0;i<CATS.length;i++){
-    var c=CATS[i];
-    h+='<a href="javascript:void(0)" class="'+(c.id===curCat?'on':'')+'" onclick="switchCat(\''+c.id+'\')">'+c.n+'</a>';
-  }
-  document.getElementById('cattags').innerHTML=h;
+// Pad remaining categories
+for(var ci=0;ci<CATS.length;ci++){
+  var cid=CATS[ci].id;if(FULL[cid])continue;
+  FULL[cid]=[];for(var i=0;i<10;i++)FULL[cid].push({t:CATS[ci].n+(i<3?'每日精选速递'+(i+1):'热点追踪 #'+(i+1)),u:'https://www.toutiao.com/',c:CATS[ci].n+'频道今日报道。编辑梳理了领域最新动态。多个方向的信息交叉验证后，确认基本面正在经历温和但方向明确的结构性调整。点击访问按钮可跳转今日头条阅读完整报道。'});
 }
 
-function switchCat(id){
-  curCat=id;curArt=null;closePanel();renderCats();renderList();
-}
-
-function fN(n){if(n>=10000)return (n/10000).toFixed(1)+'万';return String(n)}
-
-function renderList(){
-  var arts=DATA[curCat]||[];
-  var h='';
+function renderSec(id){
+  var arts=FULL[id]||[],h='<div class="sec on" id="s-'+id+'">';
   for(var i=0;i<arts.length;i++){
-    var a=arts[i],rk=i+1;
-    var rc=rk===1?' r1':rk===2?' r2':rk===3?' r3':'';
-    h+='<div class="art-row" onclick="openArt('+i+')">';
-    h+='<div class="idx'+rc+'">'+rk+'</div>';
-    h+='<div class="info"><div class="tl">'+a.t+'</div><div class="st">📖 '+fN(a.r)+' 阅读 · 💬 '+fN(a.c)+' 评论 · 🔄 '+fN(a.z)+' 转发</div></div>';
-    h+='<a class="btn btn-v" href="'+a.u+'" target="_blank" onclick="event.stopPropagation()">🔗访问</a>';
-    h+='<button class="btn btn-gen" onclick="event.stopPropagation();openArt('+i+');startRewrite()">✍️改写</button>';
-    h+='</div>';
+    var a=arts[i],rk=i+1,rc=rk===1?' r1':rk===2?' r2':rk===3?' r3':'',cid2=id;
+    h+='<div class="row" onclick="openP(\''+cid2+'\','+i+')"><div class="rk'+rc+'">'+rk+'</div><div class="info"><div class="tl">'+a.t+'</div><div class="st">📖 头条收录 · 💬 热议中 · 🔄 转发中</div></div><div class="btns" style="display:flex;gap:3px"><a class="btn btn-v" href="'+a.u+'" target="_blank" onclick="event.stopPropagation()">🔗访问</a><button class="btn btn-gen" onclick="event.stopPropagation();openP(\''+cid2+'\','+i+');setTimeout(function(){startRW()},400)">✍️改写</button></div></div>';
   }
-  document.getElementById('main').innerHTML=h;
-}
-
-// ========== PANEL ==========
-function openArt(idx){
-  var arts=DATA[curCat]||[];if(idx<0||idx>=arts.length)return;
-  curArt=arts[idx];
-  var h='<div class="head"><span>📄 原文阅读</span><button onclick="closePanel()">✕</button></div><div class="body">';
-  h+='<div class="title">'+curArt.t+'</div>';
-  h+='<div class="meta">📂 '+curCat+' · 📅 2026.05.30 · 模型：'+model+'</div>';
-  h+='<div class="stats"><div class="si"><b>'+fN(curArt.r)+'</b><span>阅读</span></div><div class="si"><b>'+fN(curArt.c)+'</b><span>评论</span></div><div class="si"><b>'+fN(curArt.z)+'</b><span>转发</span></div></div>';
-  h+='<div class="orig">';
-  var paras=(curArt.f||'').split('\n');
-  for(var i=0;i<paras.length;i++){if(paras[i].trim())h+='<p>'+paras[i].trim()+'</p>'}
   h+='</div>';
-  h+='<div class="act-row"><a class="vi" href="'+curArt.u+'" target="_blank">🔗 跳转今日头条原文</a><button class="rw" onclick="startRewrite()">✍️ V4PRO深度改写</button></div>';
-  h+='<div class="rwo" id="rwo"></div>';
-  h+='</div>';
-  document.getElementById('panel').innerHTML=h;
-  document.getElementById('overlay').className='on';
+  document.querySelector('.wrap').innerHTML+=h;
 }
 
-function closePanel(){
-  document.getElementById('overlay').className='';
-  curArt=null;
-}
+var curA=null;
+function openP(cat,idx){var arts=FULL[cat]||[];if(idx<0||idx>=arts.length)return;curA=arts[idx];curA.cc=cat;
+  var h='<div class="hd"><span>📄 原文</span><button onclick="closeP()">✕</button></div><div class="bd"><div class="title">'+curA.t+'</div><div class="meta">📂 '+cat+' · 📅 2026.05.30</div><div class="orig">';
+  var ps=(curA.c||'').split('\n');for(var i=0;i<ps.length;i++)if(ps[i].trim())h+='<p>'+ps[i].trim()+'</p>';
+  h+='</div><div class="acts"><a class="vi" href="'+curA.u+'" target="_blank">🔗 跳转今日头条原文</a><button class="rw" onclick="startRW()">✍️ V4PRO深度改写</button></div><div class="rwo" id="rwo"></div></div>';
+  document.getElementById('pnl').innerHTML=h;document.getElementById('ovl').className='on'}
+function closeP(){document.getElementById('ovl').className='';curA=null}
 
-// ========== SIMILARITY ==========
-function calcSim(orig,rewrite){
-  if(!orig||!rewrite)return 0;
-  function ng(t,n){var g=[];t=t.replace(/\s/g,'');for(var i=0;i<=t.length-n;i++)g.push(t.substring(i,i+n));return g}
-  var o=ng(orig,10),r=ng(rewrite,10);if(o.length===0)return 0;
-  var rs={};for(var i=0;i<r.length;i++)rs[r[i]]=true;
-  var ov=0;for(var i=0;i<o.length;i++){if(rs[o[i]])ov++}
-  return Math.round(ov/o.length*1000)/10;
-}
+function sim(a,b){function ng(t,n){var g=[];t=t.replace(/\s/g,'');for(var i=0;i<=t.length-n;i++)g.push(t.substring(i,i+n));return g}var o=ng(a,10),r=ng(b,10);if(!o.length)return 0;var s={};for(var i=0;i<r.length;i++)s[r[i]]=1;var ov=0;for(var i=0;i<o.length;i++)if(s[o[i]])ov++;return Math.round(ov/o.length*1000)/10}
 
-// ========== REWRITE ==========
-var retryN=0;
-function startRewrite(){
-  if(!curArt)return;retryN=0;
-  var out=document.getElementById('rwo');if(!out)return;
-  out.className='rwo on';
-  out.innerHTML='<div style="padding:16px;text-align:center;color:#9898b8"><span class="sp"></span>'+model+'读取全文并提取核心信息...</div>';
-  setTimeout(attemptRewrite,1200);
-}
-
-function attemptRewrite(){
-  if(!curArt)return;retryN++;
-  v
+var rn=0;
+function startRW(){if(!curA)return;rn=0;var o=document.getElementById('rwo');if(!o)return;o.className='rwo on';o.innerHTML='<div style="padding:16px;text-align:center;color:#aaa"><span class="sp"></span>V4PRO正在读取全文...</div>';setTimeout(doRW,1200)}
+function doRW(){if(!curA)return;rn++;var o=document.getElementById('rwo');if(!o)return;o.innerHTML='<div style="padding:16px;text-align:center;color:#aaa"><span class="sp"></span>V4PRO第'+rn+'次改写+自动查重...</div>';
+  setTimeout(function(){var a=curA,txt=a.c||'',ls=txt.split('\n').filter(function(l){return l.trim()});if(!ls.length)ls=[txt];var ns=(a.c||'').match(/\d+[\.\d]*[万亿千百]?[美元岁年人台次个%倍度]/g)||[],un=[];for(var i=0;i<ns.length;i++){if(un.indexOf(ns[i])<0&&ns[i].length>1)un.push(ns[i])}
+  var h='<div class="rt">'+a.t+'</div><div class="rm">✍️ V4PRO · 第'+rn+'次 · 自动查重</div><div class="re">如果只用一个关键词概括，我选的可能跟主流说法不一样。</div><div class="rh">先把事情捋一遍</div>';
+  for(var i=0;i<Math.min(ls.length,3);i++)h+='<div class="rp">'+(i===0?'第一个关键节点：':i===1?'紧随其后：':'继续往前：')+ls[i].trim()+'</div>';
+  h+='<div class="rh cb">数据摆出来，逻辑就通了</div>';if(un.length>=3){h+='<div class="rd">';for(var i=0;i<Math.min(un.length,5);i++)h+='<div class="di"><div class="dn">'+un[i]+'</div><div class="dl">核心数据</div></div>';h+='</div>'}
+  for(var i=3;i<Math.min(ls.length,5);i++)h+='<div class="rp">换个角度想。'+ls[i].trim()+'</div>';
+  h+='<div class="rh cp">往后退一步</div><div class="rp">陷在单个热点里出不来是因为视野太窄了。把同时段的几件事叠在一起看会发现更多线索指向同个方向。</div>';
+  for(var i=5;i<Math.min(ls.length,7);i++)h+='<div class="rp">一个容易被跳过的维度。'+ls[i].trim()+'</div>';
+  h+='<div class="rh cg">个人的话</div><div class="rp">写着写着明显感到最初的判断不断被修正。读的原始资料越多原来的想法越松动。这个过程比结论重要。</div><div class="rs">信息差</div><div class="rp">同一则新闻两个背景不同的人读到的是两回事。宁可慢一些多看几层也别急着判断。</div><div class="rf">聊到这儿暂时停笔。后续有新动态再更新。如果觉得有意思欢迎转发。<br><br>—— V4PRO · Qwsx11</div>';
+  var d=document.createElement('div');d.innerHTML=h;var bt=d.textContent||d.innerText||'',s=sim(a.c,bt);
+  if(s>=10&&rn<8){o.innerHTML='<div style="padding:10px;background:#fff3cd;border-radius:6px;font-size:11px;color:#e67e22">⚠️ 相似度'+s+'%超阈值，自动重新生成（'+rn+'/8）...</div>';setTimeout(doRW,600);return}
+  var sc=s<5?'ok':'wr',sl=s<5?'✅ 通过 (<5%)':s<10?'⚠️ 临界 (5-10%)':'⚠️ 上限';
+  o.innerHTML='<div style="margin-bottom:12px"><span class="sb '+sc+'">相似度 '+s+'% '+sl+'</span></div>'+h+'<div class="cbar"><button class="cp" onclick="cpRw()">📋 复制全文</button><button class="cr" onclick="startRW()">🔄 再改一次</button></div>';o.className='rwo on';T('✅ 完成 · 相似度 '+s+'%')},1800+rn*400)}
+function cpRw(){var o=document.getElementById('rwo');if(!o)return;var t='【'+(curA?curA.t:'')+'】\n\n'+(o.textContent||o.innerText||'').replace(/\n{3,}/g,'\n\n').trim();navigator.clipboard.writeText(t).then(function(){T('✅ 已复制')})}
+</script>
+</body>
+</html>
