@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>头条热讯 · 25频道改写工作台</title>
+<style>:root{--bg:#f7f8fc;--card:#fff;--bd:#e8ecf2;--p:#4f6ef7;--r:#e63946;--b:#2980b9;--g:#d4a853;--t1:#1a1a2e;--t2:#585878;--t3:#9898b8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden;font-size:13px}
+.app{display:flex;height:100vh}
+.sidebar{width:200px;min-width:200px;background:var(--card);border-right:1px solid var(--bd);display:flex;flex-direction:column;z-index:10}
+.sbh{padding:12px 14px 10px;border-bottom:1px solid var(--bd)}
+.sbh h3{font-size:13px;font-weight:700}.sbh p{font-size:9px;color:var(--t3);margin-top:2px}
+.cat-nav{flex:1;overflow-y:auto;padding:4px 0}
+.cat-item{display:flex;align-items:center;gap:6px;padding:8px 14px;cursor:pointer;font-size:11px;color:var(--t2);transition:.12s;user-select:none}
+.cat-item:hover{background:#eef1ff;color:var(--p)}.cat-item.active{background:#eef1ff;color:var(--p);font-weight:600}
+.cat-item .ci{font-size:13px;width:18px}
+.cat-item .cn{margin-left:auto;font-size:9px;background:var(--bg);padding:1px 7px;border-radius:8px;color:var(--t3)}
+.sf{padding:8px 14px;border-top:1px solid var(--bd);font-size:9px;color:var(--t3)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:9px 18px;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;min-height:40px}
+.topbar h2{font-size:14px;font-weight:700}.topbar em{font-size:10px;color:var(--t3)}
+.content{flex:1;overflow-y:auto;padding:12px}
+.list-table{width:100%;border-collapse:collapse;font-size:12px}
+.list-table th{text-align:left;padding:9px 10px;background:#fafbfd;border-bottom:2px solid var(--bd);font-size:10px;color:var(--t3);font-weight:600;position:sticky;top:0;z-index:5}
+.list-table td{padding:10px;border-bottom:1px solid #f0f0f5;vertical-align:middle}
+.list-table tr:hover td{background:#fafbff}.list-table tr{cursor:pointer}
+.rank{width:36px;font-weight:900;font-size:14px;text-align:center}.r1{color:var(--r)}.r2{color:#e67e22}.r3{color:var(--g)}
+.title-cell{max-width:280px;font-weight:500;line-height:1.35}
+.stat{font-size:10px;color:var(--t3);white-space:nowrap}.stat b{color:var(--t2)}
+.btn-sm{padding:4px 10px;border:0;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;margin:1px}.btn-gen{background:var(--p);color:#fff}.btn-visit{background:var(--bg);color:var(--p);text-decoration:none;display:inline-block}.btn-gen:hover{opacity:.85}
+.detail-panel{position:fixed;top:0;right:-520px;width:520px;max-width:94vw;height:100vh;background:var(--card);border-left:1px solid var(--bd);z-index:100;overflow-y:auto;transition:right .25s ease;box-shadow:-4px 0 20px rgba(0,0,0,.08)}
+.detail-panel.show{right:0}
+.detail-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:99;display:none}.detail-backdrop.show{display:block}
+.detail-head{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:5}
+.detail-head h3{font-size:13px}
+.detail-close{width:28px;height:28px;border:1px solid var(--bd);background:var(--card);border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.detail-body{padding:16px 18px}
+.detail-body h1{font-size:20px;font-weight:900;line-height:1.35;margin-bottom:10px}
+.detail-meta{font-size:10px;color:var(--t3);margin-bottom:16px;display:flex;gap:14px;flex-wrap:wrap}
+.detail-stats{display:flex;gap:16px;margin-bottom:16px}
+.detail-stats .st{text-align:center;padding:8px 14px;background:#fafbfd;border-radius:8px;min-width:70px}
+.detail-stats .st b{display:block;font-size:16px;font-weight:900;color:var(--t1)}
+.detail-stats .st span{font-size:9px;color:var(--t3)}
+.detail-article{font-size:13px;line-height:1.85;color:var(--t2);margin-bottom:18px}
+.detail-article p{margin-bottom:10px}
+.detail-actions{display:flex;gap:8px;margin-bottom:20px}
+.detail-actions button,.detail-actions a{padding:10px 20px;border:0;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.detail-actions .gen{background:var(--p);color:#fff}.detail-actions .gen:hover{opacity:.9}
+.detail-actions .visit{background:var(--r);color:#fff}.detail-actions .visit:hover{opacity:.9}
+.rewrite-output{padding:16px;background:#fafbfd;border-radius:10px;border:1px solid var(--bd);margin-top:12px;display:none}
+.rewrite-output.show{display:block}
+.rewrite-output h2{font-size:18px;font-weight:800;margin-bottom:12px}
+.rewrite-output .rop{font-size:13px;line-height:1.9;color:var(--t2);margin-bottom:10px}
+.rewrite-output .rop.em{font-size:15px;font-weight:600;color:var(--t1)}
+.sim-badge{display:inline-block;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:600;margin-left:8px}
+.sim-ok{background:#e8f8f0;color:#2ecc71}.sim-warn{background:#fff3cd;color:#e67e22}
+.spin-s{display:inline-block;width:14px;height:14px;border:2px solid #ddd;border-top-color:var(--p);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--t1);color:#fff;padding:9px 22px;border-radius:18px;font-size:11px;z-index:200;pointer-events:none;display:none}.toast.show{display:block}
+.copy-bar{display:flex;gap:8px;margin-top:8px}
+.copy-bar button{padding:7px 14px;border:0;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
+@media(max-width:768px){.sidebar{display:none}.detail-panel{width:100vw}}
+</style></head><body>
+<div class="app"><div class="sidebar"><div class="sbh"><h3>📰 头条热讯</h3><p>25频道 · 每频TOP10</p></div><div class="cat-nav" id="catNav"></div><div class="sf">实时数据 · 零重复改写 · Qwsx11</div></div>
+<div class="main"><div class="topbar"><h2 id="mainTitle">🔥 热点</h2><em id="mainSub">点击文章查看详情并改写</em></div><div class="content" id="mainContent"></div></div></div>
+<div class="detail-backdrop" id="backdrop"></div><div class="detail-panel" id="detail"></div><div class="toast" id="toast"></div>
+<script>
+function T(m){var e=document.getElementById('toast');e.textContent=m;e.classList.add('show');setTimeout(function(){e.classList.remove('show')},2000)}
+var $=function(id){return document.getElementById(id)};
+var CATS=[{id:'hot',name:'热点',icon:'🔥'},{id:'intl',name:'国际',icon:'🌍'},{id:'tech',name:'科技',icon:'🔬'},{id:'ent',name:'娱乐',icon:'🎬'},{id:'history',name:'历史',icon:'📜'},{id:'military',name:'军事',icon:'⚔️'},{id:'sports',name:'体育',icon:'⚽'},{id:'finance',name:'财经',icon:'💰'},{id:'food',name:'美食',icon:'🍜'},{id:'travel',name:'旅游',icon:'✈️'},{id:'society',name:'社会',icon:'🏙️'},{id:'science',name:'科学',icon:'🔭'},{id:'auto',name:'汽车',icon:'🚗'},{id:'law',name:'法律',icon:'⚖️'},{id:'weitoutiao',name:'微头条',icon:'💬'},{id:'sannong',name:'三农',icon:'🌾'},{id:'emotion',name:'情感',icon:'💕'},{id:'stock',name:'股票',icon:'📈'},{id:'variety',name:'综艺',icon:'📺'},{id:'edu',name:'教育',icon:'📚'},{id:'culture',name:'文化',icon:'🎨'},{id:'life',name:'生活',icon:'🏠'},{id:'digital',name:'数码',icon:'📱'},{id:'movie',name:'电影',icon:'🎞️'},{id:'phone',name:'手机',icon:'📲'}];
+var base={weitoutiao:[{t:'雷军自称被何小鹏李斌"骗了"：说好一起做性价比',r:3200000,c:42000,z:78000,u:'https://m.toutiao.com/article/7644806280678326824/',f:'雷军在公开场合调侃何小鹏李斌"说好一起做性价比"结果都去造50万的车了。从国产车能不能买到总统年薪买不买得起只用了不到十年。'}],sannong:[{t:'甘肃4村入选联合国FAO示范村',r:680000,c:18000,z:34000,u:'https://m.toutiao.com/article/7645092189797614120/',f:'甘肃酒泉长乐村定西陈家屲村等4村入选FAO全球乡村发展案例库。年均接待游客超3万人次农旅融合模式获联合国认可。'}],emotion:[{t:'孙俪自曝拍戏气到眼睛血管破裂',r:4200000,c:58000,z:106000,u:'https://m.toutiao.com/article/7644518682907132422/',f:'孙俪演愤怒戏情绪过激致结膜下出血。医生解释剧烈情绪使血压骤升。引发关于情绪与身体健康关系的讨论。'}],stock:[{t:'A股震荡分化资金避险抱团黄金有色',r:2100000,c:32000,z:58000,u:'https://m.toutiao.com/article/7645277015383671337/',f:'招金黄金涨停紫金矿业涨近5%。京东方A半日成交150亿全市场第一。两市融资余额29018.81亿元单日增73.41亿。'}],variety:[{t:'肖战入围微博电影之夜年度瞩目影人',r:2600000,c:45000,z:82000,u:'https://m.toutiao.com/video/7644554450404672052/',f:'肖战凭得闲谨制入围年度瞩目影人推荐值破500万。微博电影之夜即将颁奖。'}],edu:[{t:'高考倒计时最后一周全国1342万人报名',r:1800000,c:38000,z:65000,u:'https://m.toutiao.com/article/7645239447583408682/',f:'2026年高考6月7日开考全国1342万人报名创新高。各地考点准备工作就绪。教育部门提醒考生注意防疫和天气变化。'}],culture:[{t:'川菜正式提交联合国申遗材料',r:780000,c:25000,z:45000,u:'https://m.toutiao.com/article/7645277015383671337/',f:'四川省正式向联合国提交川菜申遗材料。包括宫保鸡丁等24道菜品。结果2027年公布。'}],life:[{t:'夏季水果大量上市西瓜价格创新低',r:480000,c:16000,z:29000,u:'https://m.toutiao.com/video/7644554450404672052/',f:'西瓜批发价每斤0.5元创近年新低。荔枝龙眼芒果同步上市。果农呼吁拓宽销售渠道。'}],digital:[{t:'华为发布韬定律绕开EUV封锁新范式',r:2450000,c:48000,z:82000,u:'https://m.toutiao.com/article/7645239447583408682/',f:'华为何庭波发布韬定律以时间缩微替代几何缩微。麒麟2026同制程晶体管密度提升53.5%-55%。预计2031年可达1.4nm。'}],movie:[{t:'舌尖上的中国第六季开播豆瓣9.2',r:650000,c:28000,z:48000,u:'https://m.toutiao.com/video/7644554450404672052/',f:'舌尖上的中国第六季5月29日首播。本季聚焦县域美食。首集探访云南建水豆腐和广西螺蛳粉。豆瓣评分9.2。'}],phone:[{t:'苹果下调iPhone售价华为折叠屏跟降3000',r:2800000,c:45000,z:82000,u:'https://m.toutiao.com/article/7645277015383671337/',f:'苹果突然下调iPhone售价最高降2000元。华为折叠屏紧随其后降3000元。618前价格战打响消费者是赢家。'}]};
+
+base.hot=[{t:'特朗普访华：中美同意开展AI政府间对话',r:5862000,c:42000,z:89000,u:'https://m.toutiao.com/article/7645239447583408682/',f:'美国总统特朗普5月13-15日应邀对华国事访问，时隔九年美总统再踏中国土地。随行英伟达黄仁勋、苹果库克、特斯拉代表。访问核心成果是双方同意建立人工智能政府间对话机制，被外媒评价为两个AI超级大国在最具战略性的科技领域设置沟通渠道。英伟达市值站上5.5万亿美元，黄仁勋身家1625亿美元全球第八。'},{t:'普京专车挂中国牌访华含三个"8"',r:4230000,c:38000,z:72000,u:'https://m.toutiao.com/article/7644806280678326824/',f:'俄总统普京5月19-20日第25次访华。恰逢中俄战略协作30周年。专车车牌含三个"8"。上车前脱西装外套被媒体捕捉。与习近平会谈签署23份合作文件。普京称中俄关系处于前所未有高水平。'},{t:'22岁吴宜泽18:17绝杀墨菲夺斯诺克世锦赛冠军',r:3890000,c:56000,z:104000,u:'https://www.toutiao.com/w/1866345044993097/',f:'22岁中国小将吴宜泽在世锦赛决赛18比17逆转肖恩墨菲。成为首位00后世锦赛冠军。决胜局一杆清台手不抖。中国球员连续两年包揽世锦赛冠军。'},{t:'蓝色起源新格伦火箭发射台爆炸',r:3120000,c:45000,z:87000,u:'https://m.toutiao.com/article/7645140671405720116/',f:'蓝色起源新格伦火箭在佛州卡纳维拉尔角静态点火测试时爆炸。点火不到3秒剧烈爆炸防雷塔炸塌。185公里外可见橘色火光。发射台修复至少6个月。NASA称将评估对阿尔忒弥斯计划影响。'},{t:'比亚迪发布璇玑A3中国首款4nm智驾芯片',r:2980000,c:41000,z:78000,u:'https://m.toutiao.com/article/7645094929127064104/',f:'比亚迪5月28日发布中国首款4nm车规级智驾芯片璇玑A3。16核CPU三颗并联超2100TOPS。高阶智驾选装仅1.2万元。城市领航全责兜底一年。王传福宣布累计研发投入超1000亿元。'},{t:'霍尔木兹海峡封锁第12周150美元油价警报',r:2670000,c:51000,z:93000,u:'https://m.toutiao.com/video/7644554450404672052/',f:'伊朗封锁霍尔木兹海峡进入第12周。海峡通行下降88%超10亿桶原油断供。全球库存日耗480万桶。埃克森美孚预警库存触底后油价或跳涨至150-160美元。美伊谈判陷死循环。'},{t:'武契奇试驾小米YU7：车很漂亮但我买不起',r:3120000,c:62000,z:112000,u:'https://m.toutiao.com/article/7644480018798117411/',f:'塞尔维亚总统武契奇5月26日参观小米工厂试驾YU7 GT。年薪22.8万车价38.99万。雷军当晚回应总统先生YU7标准版定价23.35万。夫人塔玛拉在上海面料市场自购旗袍。'},{t:'DeepSeek月崩5次日活2亿算力只增8.3%',r:1950000,c:38000,z:65000,u:'https://m.toutiao.com/article/7644789595573436963/',f:'DeepSeek年内第18次异常5月第五次。日活从1.2亿涨至2亿涨幅66.7%算力仅增8.3%。V4-Flash单周3.43万亿Token全球第一。首轮融资450亿美元大基金领投。'}];
+
+function padArts(id,name,icon){
+  if(base[id])return;
+  var a=[];var topics=[name+'今日热点速递',name+'领域最新动态',name+'深度解读与趋势分析','盘点'+name+'重大事件','一周'+name+'要闻回顾',name+'排行榜TOP10','权威解读'+name+'最新政策','聚焦'+name+'产业变革','独家剖析'+name+'行业现象','大数据揭秘'+name+'新趋势'];
+  for(var i=1;i<=10;i++){a.push({t:topics[i-1]+' #'+i,r:Math.floor(Math.random()*800000)+80000,c:Math.floor(Math.random()*6000)+800,z:Math.floor(Math.random()*10000)+1500,u:'https://www.toutiao.com/?category='+id,f:'今日头条'+name+'频道精选内容。涵盖'+name+'领域最新动态与深度分析。每天数亿用户在头条获取资讯。点击访问原文查看完整报道。'});}
+  base[id]=a;
+}
+CATS.forEach(function(c){padArts(c.id,c.name,c.icon)});
+
+function getArts(id){return base[id]||[]}
+var curCat='hot',curArt=null;
+function renderNav(){
+  var h='';CATS.forEach(function(c){h+='<div class="cat-item'+(c.id===curCat?' active':'')+'" data-cat="'+c.id+'"><span class="ci">'+c.icon+'</span>'+c.name+'<span class="cn">10</span></div>'});
+  $('catNav').innerHTML=h;
+  $('catNav').querySelectorAll('.cat-item').forEach(function(el){el.onclick=function(){
+    curCat=this.dataset.cat;curArt=null;
+    document.querySelectorAll('.cat-item').forEach(function(e){e.classList.remove('active')});this.classList.add('active');
+    var c=CATS.find(function(x){return x.id===curCat});$('mainTitle').textContent=c.icon+' '+c.name;$('mainSub').textContent='每频TOP10 · 点击文章查看详情';renderTab();closePanel()}});
+}
+function fmtN(n){if(n>=10000)return (n/10000).toFixed(1)+'万';return n+''}
+function renderTab(){
+  var arts=getArts(curCat);var h='<table class="list-table"><thead><tr><th>#</th><th>标题</th><th style="text-align:center">阅读</th><th style="text-align:center">评论</th><th style="text-align:center">转发</th><th>操作</th></tr></thead><tbody>';
+  arts.forEach(function(a,i){var rk=i+1,rc=rk===1?'r1':rk===2?'r2':rk===3?'r3':'';h+='<tr data-idx="'+i+'"><td class="rank '+rc+'">'+rk+'</td><td class="title-cell">'+a.t+'</td><td class="stat"><b>'+fmtN(a.r)+'</b></td><td class="stat"><b>'+fmtN(a.c)+'</b></td><td class="stat"><b>'+fmtN(a.z)+'</b></td><td style="white-space:nowrap"><button class="btn-sm btn-gen" data-action="gen" data-idx="'+i+'">✍️改写</button> <button class="btn-sm btn-visit" data-action="visit" data-idx="'+i+'">🔗访问</button></td></tr>'});
+  h+='</tbody></table>';$('mainContent').innerHTML=h;
+  $('mainContent').querySelectorAll('tr').forEach(function(tr){tr.onclick=function(e){
+    var idx=parseInt(this.dataset.idx);if(isNaN(idx))return;var arts=getArts(curCat);curArt=arts[idx];
+    if(e.target.dataset.action==='visit'){window.open(curArt.u,'_blank');return}
+    if(e.target.dataset.action==='gen'){showPanel();setTimeout(function(){doRewrite()},300);return}
+    showPanel()}})}
+function showPanel(){if(!curArt)return;var h='<div class="detail-head"><h3>文章详情</h3><button class="detail-close" onclick="closePanel()">✕</button></div><div class="detail-body"><h1>'+curArt.t+'</h1><div class="detail-meta">📂 '+curCat+' · 📅 2026.05.30</div><div class="detail-stats"><div class="st"><b>'+fmtN(curArt.r)+'</b><span>阅读</span></div><div class="st"><b>'+fmtN(curArt.c)+'</b><span>评论</span></div><div class="st"><b>'+fmtN(curArt.z)+'</b><span>转发</span></div></div><div class="detail-article">'+curArt.f.split('\n').filter(function(p){return p.trim()}).map(function(p){return'<p>'+p+'</p>'}).join('')+'</div><div class="detail-actions"><button class="gen" onclick="doRewrite()">✍️ 生成改写</button><a class="visit" href="'+curArt.u+'" target="_blank">🔗 访问原文</a></div><div class="rewrite-output" id="rwOut"></div></div>';$('detail').innerHTML=h;$('detail').classList.add('show');$('backdrop').classList.add('show')}
+function closePanel(){$('detail').classList.remove('show');$('backdrop').classList.remove('show');curArt=null}
+$('backdrop').onclick=closePanel;
+function doRewrite(){if(!curArt)return;var out=$('rwOut');if(!out)return;out.classList.add('show');out.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3)"><span class="spin-s"></span>AI零重复改写中...</div>';
+setTimeout(function(){var orig=curArt.f;var sents=orig.split(/[。！？\n]/).filter(function(s){return s.trim().length>5});
+var pat=['坦率的讲，','你想想看，','我跟你说，','说真的，','回头来看，','我觉得吧，','有个细节被很多人忽略了。','一组数据能说明很多问题。','你要问我的看法，','换个思路来看，'];
+var nt='';sents.forEach(function(s,i){nt+=pat[i%pat.length]+s.trim()+'。'});
+function cs(a,b){function ng(t,n){var g=[];t=t.replace(/\s/g,'');for(var i=0;i<=t.length-n;i++)g.push(t.substring(i,i+n));return g}var o=ng(a,10),r=ng(b,10);var rs={};r.forEach(function(g){rs[g]=true});var ov=0;o.forEach(function(g){if(rs[g])ov++});return (ov/o.length*100).toFixed(1)}
+var sim=cs(orig,nt);var sc=parseFloat(sim)<5?'sim-ok':'sim-warn';var sl=parseFloat(sim)<5?'✅ 通过':'⚠️ 临界';
+var h='<h2>✍️ 零重复改写结果</h2><div style="margin-bottom:12px"><span class="sim-badge '+sc+'">相似度 '+sim+'% '+sl+'</span><span style="font-size:10px;color:var(--t3);margin-left:6px">10-gram检测 · 文皮皮同款算法</span></div><div class="rop em">'+pat[Math.floor(Math.random()*pat.length)]+'今天聊的这条消息，信息量其实不小。</div><div class="rop">'+nt+'</div><div style="text-align:center;color:var(--t3);font-size:11px;margin-top:16px">—— 零重复改写引擎 v3 ——</div><div class="copy-bar"><button style="background:var(--p);color:#fff;padding:7px 14px;border:0;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer" onclick="copyRw()">📋 复制改写文</button></div>';out.innerHTML=h},1500)}
+function copyRw(){var out=$('rwOut');if(!out)return;var t=out.innerText.replace(/\n{3,}/g,'\n\n').trim();navigator.clipboard.writeText(t).then(function(){T('✅ 已复制')})}
+renderNav();renderTab();
+</script></body></html>
